@@ -1,15 +1,11 @@
-//Business Logic
-var arrayOfPlaces = [];
-var arrayIndex = 0;
-var idCounter = 0;
+var currentPlace = "";
 
+//Business Logic
 function Places(location, landmark, timeOfYear, note) {
   this.location = location;
   this.landmark = landmark;
   this.timeOfYear = timeOfYear;
   this.note = note;
-  this.id = idCounter;
-  idCounter++;
 }
 
 $(document).ready(function(){
@@ -22,50 +18,32 @@ $(document).ready(function(){
 
     var newPlaces = new Places(inputtedLocation, inputtedLandmark, inputtedTime, inputtedNote);
 
-    arrayOfPlaces.push(newPlaces);
-
-    $("#places").text("");
-
-
-      $("#places").append("<li class='place' id='" + i + "'>" + arrayOfPlaces[i].location + "</li>");
-
-
-      //End of "new-place" submit
-    });
-
-
-  for(i = 0;i < arrayOfPlaces.length; i++){
-    console.log(i);
-    var specificLocation = i;
-
-
-    $("#" + arrayOfPlaces.id).click(function() {
-      console.log();
-
-      $("#show-places").show();
-      $("#show-places h2").text(arrayOfPlaces[0].location);
-      $(".landmark").text(arrayOfPlaces[0].landmark);
-      $(".time").text(arrayOfPlaces[0].timeOfYear);
-      $(".note").text(arrayOfPlaces[0].note);
-      $(".update").click(function() {
-
-
-        $("input#new-location").val(arrayOfPlaces[newPlaces.id].location);
-        $("input#new-landmark").val(arrayOfPlaces[newPlaces.id].landmark);
-        $("input#new-time").val(arrayOfPlaces[newPlaces.id].timeOfYear);
-        $("input#new-note").val(arrayOfPlaces[newPlaces.id].note);
-        $("#show-places").hide();
-      });
-    });
+    $("#places").append("<li class='place'>" + newPlaces.location + "</li>");
 
     $("input#new-location").val("");
     $("input#new-landmark").val("");
     $("input#new-time").val("");
     $("input#new-note").val("");
-      // end of for-loop
-  }
 
+    $(".place").last().click(function() {
+      $("#show-places").show();
+      currentPlace = newPlaces;
+      $("#show-places h2").text(newPlaces.location);
+      $(".landmark").text(newPlaces.landmark);
+      $(".time").text(newPlaces.timeOfYear);
+      $(".note").text(newPlaces.note);
+    });
 
+  });
+  $("#btn-update").click(function(){
+    currentPlace.location = $("input#new-location").val();
+    currentPlace.landmark = $("input#new-landmark").val();
+    currentPlace.timeOfYear = $("input#new-time").val();
+    currentPlace.note = $("input#new-note").val();
 
-
+    $("#show-places h2").text(currentPlace.location);
+    $(".landmark").text(currentPlace.landmark);
+    $(".time").text(currentPlace.timeOfYear);
+    $(".note").text(currentPlace.note);
+  });
 });
